@@ -25,6 +25,7 @@ class Converter(object):
         return read
     
     def save_as_text_file(self, text):
+        """Save a file in .txt format"""
         filename = "email_temp.txt"
         new_file = open(filename, "w+")
         new_file.write(text)
@@ -38,6 +39,7 @@ class Converter(object):
         return clean_string
     
     def convert_to_excel(self, destination, dictionary=None):
+        """Convert the given file in to .xlsx format."""
         convert_dict = self.convert_to_dict()
         dest = f"{destination}\\converted_form.xlsx" 
         if dictionary:
@@ -46,6 +48,7 @@ class Converter(object):
         df.to_excel(dest, engine='xlsxwriter')
     
     def convert_folder_to_excel(self, folder, destination):
+        """Convert the given folder in to .xlsx format."""
         list_dict = self.convert_folder_to_dict(folder)
         excel_df = pd.DataFrame()
         dest = f"{destination}converted_forms.xlsx" 
@@ -64,7 +67,7 @@ class Converter(object):
             return complete
 
     
-    def convert_to_dict(self, file=None):
+    def convert_to_dict(self, file):
         target_dict = {}
         arr = self.read_file(file=file)
         skip = False
@@ -82,7 +85,7 @@ class Converter(object):
         dict_object = [target_dict]
         return dict_object               
 
-    def convert_folder_to_dict(self, folder, target_docx=None, target_pdf=None):
+    def convert_folder_to_dict(self, folder):
         list_dict = []
         target_folder = os.listdir(folder)
         for file in target_folder:
@@ -93,17 +96,3 @@ class Converter(object):
                 list_dict.append(self.convert_to_dict(find_file)) 
         return list_dict
 
-    # def read_file(self):
-    #     """Returns the list of lines in the events form"""
-    #     file_ext = os.path.splitext(self.file_path)
-    #     file_ext = file_ext[1]
-    #     if ".pdf" == file_ext:
-    #         pdf_file = open(self.file_path, "rb")
-    #         text = slate.PDF(pdf_file)
-    #         temp_file = self.save_as_text(text[0])
-    #         self.file_path = temp_file
-    #     elif ".docx" == file_ext:
-    #         read = ""
-    #     f = open(self.file_path, "r")
-    #     read = f.readlines()
-    #     return read
